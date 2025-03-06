@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Case Study 1
 
-## Getting Started
+John found a bug where his age is not updated. It still remains as “25”. Could you fix the following code snippet?
 
-First, run the development server:
+```js
+const [user, setUser] = useState({ name: "John", age: 25 });
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+const updateAge = () => {
+  user.age = 26;
+  setUser(user);
+};
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- John directly mutates the `user` object by setting its `age` property to `26`
+- John calls `setUser` with the same object reference which remains unchanged
+- React does not detect any state changes and does not re-render the component
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```js
+const updateAge = () => {
+  setUser({ ...user, age: 26 });
+};
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- ensures immutability by creating a new object with the spread operator `...`
+- calls `setUser()` with a new object reference
+- React detects a state change and re-renders the component
 
-## Learn More
+# Case Study 2
 
-To learn more about Next.js, take a look at the following resources:
+Now we are keeping track of more users. However, original names are still displayed even though the method `updateUser` is called. Could you fix the following code snippet?
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```js
+const [users, setUsers] = useState([
+  { id: 1, name: "John" },
+  { id: 2, name: "Jane" },
+]);
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+const updateUser = (id, newName) => {
+  const user = users.find((u) => u.id === id);
+  user.name = newName;
+  setUsers(users);
+};
+```
 
-## Deploy on Vercel
+- `users.find()` returns a reference to an object inside the `users` array
+- `user` is now pointing to an object inside the `users` array
+- John directly mutates the `users` array by setting the `name` property of `user` to `newName`
+- John calls `setUsers()` with the same object reference which remains unchanged
+- React does not detect any state changes and does not re-render the component
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```js
+const updateUser = (id, newName) => {
+  setUsers(
+    users.map((user) => (user.id === id ? { ...user, name: newName } : user)),
+  );
+};
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- ensures immutability by creating a new array with `users.map()`
+- calls `setUsers()` with a new object reference
+- React detects a state change and re-renders the component
+
+# Case Study 3
+
+### 1. Prerequisites
+
+Before running this application, make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+- [Git](https://git-scm.com/)
+
+### 2. Clone the Repository
+
+Open a terminal (Command Prompt, PowerShell, or macOS Terminal) and run:
+
+```git
+git clone https://github.com/matthewtansh/govtech-technical-assessment.git
+```
+
+### 3. Navigate to the Project Directory
+
+```sh
+cd govtech-technical-assessment
+```
+
+### 4. Install Dependencies
+
+```sh
+npm install
+```
+
+### 5. Run the Application
+
+```sh
+npm run dev
+```
+
+### 6. Open in Browser
+
+Once your browser and go to http://localhost:3000/
