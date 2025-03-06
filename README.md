@@ -98,4 +98,4 @@ npm run dev
 
 ### 6. Open in Browser
 
-Once your browser and go to http://localhost:3000/
+Open your browser and go to http://localhost:3000/
